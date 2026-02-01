@@ -57,6 +57,37 @@ extracted/iCarPro2S_v2.3.14/
 
 ---
 
+## Progress Update (2026-02-01)
+
+### Firmware parsing
+- Converted `MIC110301_v2.3.14.txt` → `MIC110301_v2.3.14.bin`
+- Size: **~99,722 bytes** (199,444 hex chars)
+- `binwalk` shows **no embedded filesystem** (likely raw MCU firmware)
+- `strings` on binary mostly unreadable (expected for raw firmware)
+
+### Updater EXE strings (highlights)
+- References to **Vgate** / **Icar01** / **Icar03** / **vLinker BM/FD/MC**
+- Error messages suggest **firmware version gating**
+  - “Please upgrade to version vLinker_*_V2.2.2X first!”
+  - “The device firmware version number is higher, please use the latest firmware file.”
+- Support contact: **support@vgate.com.cn**
+- PDB path leaked (internal build path):
+  - `D:\work\Vgate\VgateOTA\WindowsOTA\vLinkerFwUpdater\software\Release\vLinkerFwUpdater v4.0.pdb`
+
+---
+
+## Next Focus
+
+1. **Firmware structure decoding**
+   - Investigate MIC1103 format (header, checksum, record structure)
+   - Identify if it's Intel HEX–like or custom record format
+
+2. **Updater reverse**
+   - Look for embedded updater protocol (serial/BT/WiFi?)
+   - Extract any firmware signing/verification logic
+
+---
+
 ## Notes
 - Official file naming suggests chipset **MIC110301** (Vgate internal ID)
 - The update appears to target an ELM327-compatible stack with custom AT commands
