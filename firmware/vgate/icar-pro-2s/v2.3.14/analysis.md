@@ -154,6 +154,16 @@ Example: `0102020C0030000800040000000400000154`
 - pos6: often `0x800B`, occasionally `0x34FE` / `0xDEDC` / `0x365B`
 - pos8: varying small sizes (`0x1E8`, `0x154`, `0x280`, ...)
 
+### EE pattern correlation
+- For records where **pos3=0x0008, pos4=0x0004, pos6=0x800B**:
+  - `pos8 = pos2 + 0x1AC` (constant offset **428**)
+  - pos2 increases by 4 → pos8 increases by 4 (table-like)
+
+- For records where **pos3=0x0108, pos4=0x0004, pos6=0x800B**:
+  - `pos8 = pos2 + 0x1AD` (offset **429**)
+  - pos2 again increments by 4
+
+**Implication:** EE records likely define a **range/table mapping** (index → offset).
 **EE(6-byte) records** (3 entries) parsed as 3x16-bit words:
 - `[0x010F, 0x0100, 0x0114]`
 - `[0x0100, 0x0000, 0x0104]`
