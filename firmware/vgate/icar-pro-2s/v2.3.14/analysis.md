@@ -220,7 +220,7 @@ This is a prime area to look for **auth/signature enforcement** during update.
 
 ### Updater string artifacts (protocol hints)
 - AT command traffic visible:
-  - `ATE1`, `ATBRD11`, `ATBRTFF`, `ATRD`, `AT@3`, `ATIELM327`, `ELM327`
+  - `ATE1`, `ATBRD11`, `ATBRTFF`, `ATRD`, `AT@3`, `ATRDSN`, `ATIELM327`
 - Mentions **baud** and a specific message:
   - “Change the baud rate to **2Mbps!**”
 - Error messages imply line-based update file parsing:
@@ -228,6 +228,18 @@ This is a prime area to look for **auth/signature enforcement** during update.
   - “update file format error!”
 
 **Implication:** updater likely speaks **ELM327/AT-style handshake**, then switches baud to high speed for transfer.
+
+---
+
+## Firmware line format quick check
+- Line lengths (hex chars):
+  - `DE`: 264 (706 lines), 40 (2 lines)
+  - `DD`: 264 (7), 136 (5)
+  - `DA`: 14 (9)
+  - `EE`: 36 (99), 12 (3)
+  - `55`, `AA`: 6 (1 each)
+
+**Inference:** file is fixed-record, line-based update format.
 
 **EE(6-byte) records** (3 entries) parsed as 3x16-bit words:
 - `[0x010F, 0x0100, 0x0114]`
