@@ -207,6 +207,17 @@ Using offset = `pos8 - 0x1AC` and length = `pos3`, the mapped table size ≈ **4
 
 **Implication:** The EE/DE table is likely **not stored verbatim** in the raw binary; it may be reconstructed at runtime or packed differently.
 
+---
+
+## Updater EXE — I/O path hints
+
+`vLinkerFwUpdater v4.0.exe` imports show **serial COM usage**:
+- `CreateFileA`, `ReadFile`, `WriteFile`
+- `SetupComm`, `SetCommTimeouts`, `GetCommState`, `SetCommState`, `PurgeComm`
+
+**Inference:** Firmware update likely over **UART/CDC (COM port)** rather than HTTP.
+This is a prime area to look for **auth/signature enforcement** during update.
+
 **EE(6-byte) records** (3 entries) parsed as 3x16-bit words:
 - `[0x010F, 0x0100, 0x0114]`
 - `[0x0100, 0x0000, 0x0104]`
