@@ -218,6 +218,17 @@ Using offset = `pos8 - 0x1AC` and length = `pos3`, the mapped table size ≈ **4
 **Inference:** Firmware update likely over **UART/CDC (COM port)** rather than HTTP.
 This is a prime area to look for **auth/signature enforcement** during update.
 
+### Updater string artifacts (protocol hints)
+- AT command traffic visible:
+  - `ATE1`, `ATBRD11`, `ATBRTFF`, `ATRD`, `AT@3`, `ATIELM327`, `ELM327`
+- Mentions **baud** and a specific message:
+  - “Change the baud rate to **2Mbps!**”
+- Error messages imply line-based update file parsing:
+  - “Repeat three times error on %d line!”
+  - “update file format error!”
+
+**Implication:** updater likely speaks **ELM327/AT-style handshake**, then switches baud to high speed for transfer.
+
 **EE(6-byte) records** (3 entries) parsed as 3x16-bit words:
 - `[0x010F, 0x0100, 0x0114]`
 - `[0x0100, 0x0000, 0x0104]`
