@@ -1,0 +1,37 @@
+MIC1103 ChangeLog
+chebotong Technology Co., Ltd
+https://www.vgatemall.com/
+
+v2.3.14 - 2025/06/19
+********************
+Changes:
+  - The ATTA hh command also modifies the received CAN protocol extension address.
+Bugs:
+  - J1850 protocol received data affects ISO protocol data reception.
+
+v2.3.12 - 2025/02/11
+********************
+News:
+  - Added VTVLRDhh command.
+
+v2.3.10 - 2024/10/29
+********************
+Changes:
+  - VPW supports 4128 bytes receive.
+
+v2.3.08 - 2024/10/22
+********************
+News:
+  - Added VTSWGP FC1/0£¬FA1/0 command.
+
+v2.3.04 - 2024/05/25
+********************
+News:
+  - Added VTMFCA command.
+Bugs:
+  - ISO protocol 5 baud Initialization error.
+
+v2.3.02 - 2023/11/30
+********************
+News:
+  - Initial release.
