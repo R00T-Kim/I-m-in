@@ -171,6 +171,19 @@ Example: `0102020C0030000800040000000400000154`
 - EE pos6 value **0x800B** (swapped → `0b80`) appears **91 times**
 
 **Inference:** EE records likely map **only the `0b80` block group**, while other DE groups are raw code/data outside the EE table.
+
+### EE pos2 ↔ DE(0b80) tentative mapping
+- EE pos2 values: **64 entries** (0..252 step 4)
+- EE pos2 entries with 2 records: **25** → total **89** entries
+- DE(0b80) long blocks: **89**
+
+**Heuristic mapping:**
+- Sort DE(0b80) blocks by header bytes `[2:4]` (big-endian)
+- Assign 1 or 2 DE blocks per pos2, matching EE counts
+- Output written: `ee_de_0b80_map.csv` (pos2,pos8,hdr2,...)
+
+> This mapping is **speculative** but aligns counts; needs validation.
+
 **EE(6-byte) records** (3 entries) parsed as 3x16-bit words:
 - `[0x010F, 0x0100, 0x0114]`
 - `[0x0100, 0x0000, 0x0104]`
