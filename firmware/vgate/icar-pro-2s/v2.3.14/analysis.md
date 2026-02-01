@@ -140,6 +140,25 @@ extracted/iCarPro2S_v2.3.14/
 - `DA` payload length = **7 bytes** (segment/address control)
 - `EE` payload length = **18 / 6 bytes** (metadata/control)
 
+### EE(18-byte) word pattern (9 x 16-bit)
+Example: `0102020C0030000800040000000400000154`
+```
+[0x0102, 0x020C, 0x0030, 0x0008, 0x0004, 0x0000, 0x0004, 0x0000, 0x0154]
+```
+**Observed distributions by word position:**
+- pos0: `0x0103` (91), `0x0102` (5), `0x0104` (3)
+- pos1: constant `0x020C` (99)
+- pos2: varies (`0x30`, `0x10`, `0x38`, `0x90`, ...)
+- pos3: `0x0008` (66) or `0x0108` (33)
+- pos4: mostly `0x0004`, sometimes `0x1000` / `0x20` / `0x28`
+- pos6: often `0x800B`, occasionally `0x34FE` / `0xDEDC` / `0x365B`
+- pos8: varying small sizes (`0x1E8`, `0x154`, `0x280`, ...)
+
+**EE(6-byte) records** (3 entries) parsed as 3x16-bit words:
+- `[0x010F, 0x0100, 0x0114]`
+- `[0x0100, 0x0000, 0x0104]`
+- `[0x0101, 0x0000, 0x0105]`
+
 ### Naive reconstruction (hypothesis)
 - Assumption: first **4 bytes** in DE/DD are header, remaining is data
 - Concatenated all DE/DD records (excluding first 4 bytes)
