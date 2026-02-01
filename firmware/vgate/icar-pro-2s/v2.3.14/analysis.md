@@ -255,6 +255,15 @@ From contiguous string block, likely order:
 7. `VTRDFL`, `VTRDFLKEY`, `VTRDHATB` (file/key phase)
 8. `VTDL` / `VTDLDT` / `VTDLED` (download, line-based)
 
+### VT commands with explicit CR terminator
+Strings that appear in **VT command+CR** format:
+```
+VTPROI, VTBUID, VTCUID, VTFL, VTVERS,
+VTDLED, VTVATN, VTRDHATB, VTUPDT03,
+VTDLMIC332, VTDLMIC3422, VTDLMIC3425
+```
+**Inference:** these are likely **direct serial commands**, not just UI strings.
+
 ### VTBLFFF1… pattern
 - Observed string: `VTBLFFF1` + **zero-padded hex** + trailing `F`
 - Length ~139 chars (suggests fixed-length block/bitmap payload)
