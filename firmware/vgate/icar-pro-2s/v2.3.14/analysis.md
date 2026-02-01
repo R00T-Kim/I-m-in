@@ -244,6 +244,23 @@ Context hints:
 
 **Implication:** AT handshake likely transitions into **VT* command protocol** over serial.
 
+### Tentative update flow (string adjacency)
+From contiguous string block, likely order:
+1. `ATE1` → `ATBRD11` → `ATBRTFF`
+2. `VTPROI` (product info) → `VTI`
+3. `VTBUID` / `VTCUID` (board/chip IDs)
+4. `VTUPDT` (start update)
+5. `VTVERS` / `VTVERSIcarXX` (version checks)
+6. `AT@3`, `ATRD`, `VTVATN`, `ATRDSN`, `ATI`
+7. `VTRDFL`, `VTRDFLKEY`, `VTRDHATB` (file/key phase)
+8. `VTDL` / `VTDLDT` / `VTDLED` (download, line-based)
+
+### VTBLFFF1… pattern
+- Observed string: `VTBLFFF1` + **zero-padded hex** + trailing `F`
+- Length ~139 chars (suggests fixed-length block/bitmap payload)
+
+**Implication:** there is likely a **block map / bitmap** sent during update.
+
 ---
 
 ## Firmware line format quick check
