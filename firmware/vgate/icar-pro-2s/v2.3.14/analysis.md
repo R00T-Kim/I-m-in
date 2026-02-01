@@ -182,7 +182,23 @@ Example: `0102020C0030000800040000000400000154`
 - Assign 1 or 2 DE blocks per pos2, matching EE counts
 - Output written: `ee_de_0b80_map.csv` (pos2,pos8,hdr2,...)
 
-> This mapping is **speculative** but aligns counts; needs validation.
+### EE-derived offset hypothesis (refined)
+- In EE0b80 records, **pos3 is always 0x0008 or 0x0108**
+  - When a pos2 has **two EE records**, pos3 values are always `{0x0008, 0x0108}`
+- `pos8 - pos2` is usually **0x1AC** or **0x1AD**
+
+**Working hypothesis:**
+- **pos2** = table index (0..252 step 4)
+- **pos3** = length (8 or 264 bytes)
+- **pos8** = offset (pos2 + 0x1AC/0x1AD)
+
+Using offset = `pos8 - 0x1AC` and length = `pos3`, the mapped table size ≈ **430 bytes**.
+
+**Artifacts:**
+- `MIC110301_v2.3.14_0b80_tablemap.bin` (occupancy map)
+- `MIC110301_v2.3.14_0b80_tablemap_data.bin` (filled with DE data slices)
+
+> This still needs validation against actual firmware layout.
 
 **EE(6-byte) records** (3 entries) parsed as 3x16-bit words:
 - `[0x010F, 0x0100, 0x0114]`
