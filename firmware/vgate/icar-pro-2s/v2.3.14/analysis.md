@@ -254,6 +254,28 @@ This is a prime area to look for **auth/signature enforcement** during update.
 
 **Implication:** DD likely carries **segment data** with addresses encoded in DA.
 
+### DD address structure (deeper)
+- DD header is 4-byte address: `hi16:lo16`
+- Observed DD hi16 values: `0100, 0180, 01C0, 0200, 0240, 02C0, 0300, 0380` (+ 0x0000, 0x0080)
+- DD lo16 values repeat across different hi16 (e.g., `0x10b4` appears with hi16 0x0180 and 0x02C0)
+
+**DA→DD hi16 deltas** (table excerpt):
+```
+DA_hi DD_hi delta  lo   len
+0000  0100  +256  18b4  128
+0100  0180  +128  10b4  128
+0100  0200  +256  1355  128
+0180  0180    +0  80b5   64
+0180  01c0   +64  80b5   64
+01c0  0200   +64  38b5   64
+0200  0240   +64  f8b5  128
+0240  02c0  +128  10b4   64
+02c0  0300   +64  2de9  128
+02c0  0380  +192  b847   64
+```
+
+**Inference:** DD addresses are **not linear**; they are likely **indices into a mapping table** derived from DA.
+
 **EE(6-byte) records** (3 entries) parsed as 3x16-bit words:
 - `[0x010F, 0x0100, 0x0114]`
 - `[0x0100, 0x0000, 0x0104]`
