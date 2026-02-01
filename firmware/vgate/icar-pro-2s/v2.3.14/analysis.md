@@ -200,6 +200,13 @@ Using offset = `pos8 - 0x1AC` and length = `pos3`, the mapped table size ≈ **4
 
 > This still needs validation against actual firmware layout.
 
+### Search in binary
+- Exact match of `MIC110301_v2.3.14_0b80_tablemap_data.bin` **not found** in `MIC110301_v2.3.14.bin`
+- No large contiguous run match (largest non-0xFF run length 293 bytes → not found)
+- Binary contains multiple **0xFF padding runs** (largest ~60 bytes), but tablemap doesn’t align directly
+
+**Implication:** The EE/DE table is likely **not stored verbatim** in the raw binary; it may be reconstructed at runtime or packed differently.
+
 **EE(6-byte) records** (3 entries) parsed as 3x16-bit words:
 - `[0x010F, 0x0100, 0x0114]`
 - `[0x0100, 0x0000, 0x0104]`
