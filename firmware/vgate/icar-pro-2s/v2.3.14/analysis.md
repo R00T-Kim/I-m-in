@@ -164,6 +164,13 @@ Example: `0102020C0030000800040000000400000154`
   - pos2 again increments by 4
 
 **Implication:** EE records likely define a **range/table mapping** (index → offset).
+
+### EE ↔ DE correlation
+- DE records grouped by first 2 bytes:
+  - `0b80` (91), `0c00` (89), `0c80` (88), `0d00` (88), `0d80` (88), `0e00` (88), `0e80` (88), `0f00` (88)
+- EE pos6 value **0x800B** (swapped → `0b80`) appears **91 times**
+
+**Inference:** EE records likely map **only the `0b80` block group**, while other DE groups are raw code/data outside the EE table.
 **EE(6-byte) records** (3 entries) parsed as 3x16-bit words:
 - `[0x010F, 0x0100, 0x0114]`
 - `[0x0100, 0x0000, 0x0104]`
