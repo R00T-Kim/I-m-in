@@ -241,6 +241,19 @@ This is a prime area to look for **auth/signature enforcement** during update.
 
 **Inference:** file is fixed-record, line-based update format.
 
+### Checksum quick tests (negative)
+- Simple sum/XOR (1–2 bytes), CRC16-IBM/CCITT **did not match** last bytes
+- Suggests **custom checksum** or checksum located elsewhere in record
+
+### DA → DD segmentation
+- DA records appear to define segments; following DD blocks likely belong to segment
+- Example:
+  - `DA 00000011000100` → addr `0x11`, len `1`, **DD blocks: 1**
+  - `DA 01000110020103` → addr `0x1000110`, len `513`, **DD blocks: 2**
+  - `DA 030001050200fa` → addr `0x3000105`, len `512`, **DD blocks: 0**
+
+**Implication:** DD likely carries **segment data** with addresses encoded in DA.
+
 **EE(6-byte) records** (3 entries) parsed as 3x16-bit words:
 - `[0x010F, 0x0100, 0x0114]`
 - `[0x0100, 0x0000, 0x0104]`
