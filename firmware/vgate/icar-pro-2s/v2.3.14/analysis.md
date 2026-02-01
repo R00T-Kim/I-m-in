@@ -93,16 +93,24 @@ extracted/iCarPro2S_v2.3.14/
 ### Record structure observations
 - Total lines: **834**
 - All records share prefix **`110301`** (device/chip identifier)
-- Common record types after prefix:
-  - `DD` (length **272 chars**) — likely **data blocks**
-  - `DA` (length **22 chars**) — likely **address/segment markers**
-  - `EE` (length **20 chars**) — likely **control/metadata**
-- File begins with **`11030155AA0114`** (possible magic/header)
+- Record type distribution:
+  - `DE` **708 records** (payload len 264 chars; 2 records len 40)
+  - `DD` **12 records** (payload len 264 chars; 5 records len 136)
+  - `DA` **9 records** (payload len 14 chars)
+  - `EE` **102 records** (payload len 36 chars; 3 records len 12)
+  - `55`, `AA` seen once each (likely header/magic sequence)
+- File begins with **`11030155AA0114`** (magic/header)
 
 **Hypothesis:** Custom HEX-like format:
 ```
-110301 [TYPE] [ADDR?] [DATA...] [CHECKSUM?]
+110301 [TYPE] [FIELDS...] [DATA...] [CHECKSUM?]
 ```
+
+**Initial DA decode (7 bytes)**
+- Example: `DA00000011000100`
+  - addr = `0x00000011`
+  - len  = `0x0001`
+  - chk? = `0x00`
 
 ### Updater EXE structure
 - PE32 GUI, **no embedded archives** (only standard .rsrc assets)
