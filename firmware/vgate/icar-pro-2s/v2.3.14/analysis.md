@@ -132,6 +132,28 @@ extracted/iCarPro2S_v2.3.14/
 
 ---
 
+## Progress Update (2026-02-01) — Record Assembly Attempt
+
+### Record observations (extended)
+- `DE` payload length = **132 bytes** (likely header+data or data+checksum)
+- `DD` payload length = **132 / 68 bytes**
+- `DA` payload length = **7 bytes** (segment/address control)
+- `EE` payload length = **18 / 6 bytes** (metadata/control)
+
+### Naive reconstruction (hypothesis)
+- Assumption: first **4 bytes** in DE/DD are header, remaining is data
+- Concatenated all DE/DD records (excluding first 4 bytes)
+- **Resulting size:** **91,616 bytes** (`MIC110301_v2.3.14_concat.bin`)
+
+### Checksum tests (failed)
+- First 4 bytes of DE record **≠** CRC32(data)
+- Last 4 bytes of DE record **≠** CRC32(data)
+- Last 2 bytes **≠** simple sum(data)
+
+**Conclusion:** format is custom; needs explicit field mapping.
+
+---
+
 ## Notes
 - Official file naming suggests chipset **MIC110301** (Vgate internal ID)
 - The update appears to target an ELM327-compatible stack with custom AT commands
