@@ -229,6 +229,21 @@ This is a prime area to look for **auth/signature enforcement** during update.
 
 **Implication:** updater likely speaks **ELM327/AT-style handshake**, then switches baud to high speed for transfer.
 
+### VT command family (likely custom protocol)
+Extracted tokens from updater EXE suggest a **VT* command namespace**:
+```
+VTBUID, VTCUID, VTPROI, VTRB, VTRDFL, VTRDFLKEY, VTRDHATB,
+VTUPDT, VTUPDT03, VTDL, VTDLDT, VTDLED, VTFL, VTBL, VTVATN,
+VTVADJ, VTVERS, VTVERSI, VTDLMIC332/3422/3425, VTIV_L
+```
+Context hints:
+- `VTUPDT` / `VTUPDT03`: update session init / connection OK
+- `VTDL*`: download/transfer flow (errors tied to line numbers)
+- `VTBUID` / `VTCUID`: device/board IDs
+- `VTRDFL` / `VTRDFLKEY`: read file / key (possible auth)
+
+**Implication:** AT handshake likely transitions into **VT* command protocol** over serial.
+
 ---
 
 ## Firmware line format quick check
