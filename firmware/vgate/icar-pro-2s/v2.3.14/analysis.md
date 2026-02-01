@@ -88,6 +88,42 @@ extracted/iCarPro2S_v2.3.14/
 
 ---
 
+## Progress Update (2026-02-01) — Format Triage
+
+### Record structure observations
+- Total lines: **834**
+- All records share prefix **`110301`** (device/chip identifier)
+- Common record types after prefix:
+  - `DD` (length **272 chars**) — likely **data blocks**
+  - `DA` (length **22 chars**) — likely **address/segment markers**
+  - `EE` (length **20 chars**) — likely **control/metadata**
+- File begins with **`11030155AA0114`** (possible magic/header)
+
+**Hypothesis:** Custom HEX-like format:
+```
+110301 [TYPE] [ADDR?] [DATA...] [CHECKSUM?]
+```
+
+### Updater EXE structure
+- PE32 GUI, **no embedded archives** (only standard .rsrc assets)
+- Sections: .text / .rdata / .data + resources
+- Timestamp: **2024-02-21**
+- Resources only (icons/dialogs/strings)
+
+---
+
+## Next Action (recommended)
+
+1. **Parse DD/DA/EE records**
+   - Extract suspected address fields
+   - Validate checksum (if present)
+
+2. **Map DD blocks into binary**
+   - Rebuild full firmware image with address ordering
+   - Compare with naive binary conversion
+
+---
+
 ## Notes
 - Official file naming suggests chipset **MIC110301** (Vgate internal ID)
 - The update appears to target an ELM327-compatible stack with custom AT commands
