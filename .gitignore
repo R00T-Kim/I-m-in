@@ -1,0 +1,36 @@
+# Personal memory files (should not be public)
+memory/
+MEMORY.md
+*.log
+
+# Credentials and secrets
+*.key
+*.pem
+*.env
+secrets/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Raw analysis notes (may contain sensitive info before sanitization)
+raw-notes/
+drafts/
+
+# Build artifacts
+dist/
+build/
+*.pyc
+__pycache__/
+node_modules/
