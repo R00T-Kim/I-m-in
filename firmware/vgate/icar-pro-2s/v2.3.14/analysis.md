@@ -342,4 +342,57 @@ DA_hi DD_hi delta  lo   len
 
 ---
 
+## Zero-Shot Methodology
+
+This analysis used a **zero-shot approach**: reverse engineering the firmware format **without official specifications** or prior knowledge of the MIC110301 structure.
+
+### Techniques Applied
+
+1. **Record Type Discovery**
+   - Enumerated all unique prefixes following `110301` header
+   - Identified record types: `55`, `AA`, `DA`, `DD`, `DE`, `EE`
+   - Measured payload length distributions per type
+
+2. **Payload Length Clustering**
+   - DE: 264 chars (706 records) + 40 chars (2 records)
+   - DD: 264 chars (7 records) + 136 chars (5 records)
+   - DA: 14 chars (9 records)
+   - EE: 36 chars (99 records) + 12 chars (3 records)
+   - **Inference**: fixed-record format with type-specific lengths
+
+3. **Correlation Analysis**
+   - Compared EE `pos6` value (`0x800B`) with DE first-2-byte prefix (`0b80`)
+   - Found **91 EE records** map to **91 DE(0b80) records**
+   - Hypothesized: EE records define a **lookup table** for specific DE blocks
+
+4. **Address Mapping Hypothesis**
+   - Tested `pos8 = pos2 + offset` (offset ∈ {0x1AC, 0x1AD})
+   - Generated tentative address→data map (`ee_de_0b80_map.csv`)
+   - Validated: mapped table **not found verbatim** in concatenated binary → likely runtime-reconstructed
+
+5. **Checksum Exhaustive Testing**
+   - Tested: CRC16-IBM/CCITT, CRC32, simple sum, XOR
+   - **Result**: all failed → custom checksum or non-standard location
+
+6. **Updater String Extraction**
+   - Extracted AT/VT command sequences from `vLinkerFwUpdater v4.0.exe`
+   - Identified update flow: `ATBRD11` → `VTUPDT` → `VTDL*` (line-based transfer)
+   - Discovered baud-rate switch hint: "Change baud rate to **2Mbps**"
+
+### Insights
+
+- **DA records**: segment headers (address, length, checksum?)
+- **DD/DE records**: payload blocks (possibly indexed by DA)
+- **EE records**: metadata/table (maps certain DE blocks by index)
+- **Updater protocol**: ELM327/AT handshake → VT* commands over high-speed serial
+
+### Limitations
+
+- Format is proprietary; exact field meanings remain unknown
+- No successful checksum validation
+- Binary reconstruction incomplete (aligned table not found)
+- VT* command semantics inferred from strings only (no disassembly)
+
+---
+
 **Status**: ✅ Initial triage complete
