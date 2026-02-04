@@ -395,4 +395,23 @@ This analysis used a **zero-shot approach**: reverse engineering the firmware fo
 
 ---
 
+## Automation Artifacts (Added)
+
+Generated scripts for reusable analysis:
+- `scripts/parse_records.py` → record counts + lengths + `records.csv`
+- `scripts/ee_analyze.py` → EE distribution + `ee_table.csv`
+- `scripts/dd_da_map.py` → DA→DD heuristic mapping table
+
+Latest run outputs (v2.3.14):
+- `analysis_out/stats.txt`:
+  - lines=834
+  - lengths=14:2 20:3 22:9 44:99 48:2 52:1 144:5 272:713
+  - types=DE:708 EE:102 DD:12 DA:9 55:1 AA:1
+- `analysis_out/ee_stats.txt` (highlights):
+  - EE lens: 20:3, 44:99
+  - pos6=0x800B (91 entries)
+  - offsets pos8-pos2 mostly 0x1AC/0x1AD
+
+---
+
 **Status**: ✅ Initial triage complete
